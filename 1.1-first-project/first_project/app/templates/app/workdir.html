@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Содержимое директории </title>
+</head>
+<body>
+        <h2>Рабочая директория приложения " {{ dir_name }} " содержит:</h2>
+        {% for item in list_dir %}
+            {{ item }}
+            <br>
+        {% endfor %}
+</body>
+</html>
