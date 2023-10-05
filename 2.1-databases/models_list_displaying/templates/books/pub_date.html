@@ -5,7 +5,7 @@
 {% block content %}
     <div class="container">
         <div class="header">
-            <h1><a href="">Каталог</a></h1>
+            <h1><a href="{% url 'books' %}">Каталог</a></h1>
         </div>
         <div class="row">
             {% for book in books %}
@@ -13,7 +13,7 @@
             <div class="book col-md-4">
                 <h2>"{{ book.name }}"</h2>
                 <p><i>Автор:</i><b> {{ book.author }}</b></p>
-                <p><i>Дата публикации:</i><b><a href="{% url 'pubdate' book.slug %}"> {{ book.pub_date|date:"Y-m-d" }}</a></b></p>
+                <p><i>Дата публикации:</i><b> {{ book.pub_date|date:"Y-m-d" }}</b></p>
             </div>
 
             {% endfor %}
