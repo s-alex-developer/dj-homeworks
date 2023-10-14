@@ -28,5 +28,144 @@
       "published_at": "2018-07-30T20:08:20Z",
       "image": "th_1521804489_cfyJCMV.jpg"
     }
+  },
+  {
+    "model": "articles.tag",
+    "pk": 1,
+    "fields": {
+      "name": "Здоровье"
+    }
+  },
+    {
+    "model": "articles.tag",
+    "pk": 2,
+    "fields": {
+      "name": "Исследования"
+    }
+  },
+  {
+    "model": "articles.tag",
+    "pk": 3,
+    "fields": {
+      "name": "Культура"
+    }
+  },
+  {
+    "model": "articles.tag",
+    "pk": 4,
+    "fields": {
+      "name": "Развлечения"
+    }
+  },
+  {
+    "model": "articles.tag",
+    "pk": 5,
+    "fields": {
+      "name": "Наука"
+    }
+  },
+  {
+    "model": "articles.tag",
+    "pk": 6,
+    "fields": {
+      "name": "А-тестовый тег"
+    }
+  },
+    {
+    "model": "articles.tag",
+    "pk": 7,
+    "fields": {
+      "name": "Я-тестовый тег"
+    }
+  },
+  {
+    "model": "articles.scope",
+    "pk": 1,
+    "fields": {
+      "article_id": 1,
+      "tag_id": 3,
+      "is_main": "True"
+    }
+  },
+  {
+    "model": "articles.scope",
+    "pk": 2,
+    "fields": {
+      "article_id": 1,
+      "tag_id": 4,
+      "is_main": "False"
+    }
+  },
+  {
+    "model": "articles.scope",
+    "pk": 3,
+    "fields": {
+      "article_id": 2,
+      "tag_id": 1,
+      "is_main": "True"
+    }
+  },
+  {
+    "model": "articles.scope",
+    "pk": 4,
+    "fields": {
+      "article_id": 2,
+      "tag_id": 2,
+      "is_main": "False"
+    }
+  },
+  {
+    "model": "articles.scope",
+    "pk": 5,
+    "fields": {
+      "article_id": 3,
+      "tag_id": 5,
+      "is_main": "True"
+    }
+  },
+  {
+    "model": "articles.scope",
+    "pk": 6,
+    "fields": {
+      "article_id": 3,
+      "tag_id": 2,
+      "is_main": "False"
+    }
+  },
+  {
+    "model": "articles.scope",
+    "pk": 7,
+    "fields": {
+      "article_id": 1,
+      "tag_id": 6,
+      "is_main": "False"
+    }
+  },
+    {
+    "model": "articles.scope",
+    "pk": 8,
+    "fields": {
+      "article_id": 1,
+      "tag_id": 7,
+      "is_main": "False"
+    }
+  },
+  {
+    "model": "articles.scope",
+    "pk": 9,
+    "fields": {
+      "article_id": 2,
+      "tag_id": 6,
+      "is_main": "False"
+    }
+  },
+      {
+    "model": "articles.scope",
+    "pk": 10,
+    "fields": {
+      "article_id": 3,
+      "tag_id": 7,
+      "is_main": "False"
+    }
   }
 ]
