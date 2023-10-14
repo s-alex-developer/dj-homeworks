@@ -8,8 +8,7 @@
   {% for student in object_list %}
     <p>
     <li>{{ student.name }} класс {{ student.group }} <br>
-
-    Преподаватели:<br>
+    <b>Преподаватели:</b><br>
 
       {% for student in student.students_teachers.all %}
 

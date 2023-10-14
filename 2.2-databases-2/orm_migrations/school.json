@@ -3,31 +3,31 @@
   "model": "school.teacher",
   "pk": 1,
   "fields": {
-    "name": "Teacher 1",
-    "subject": "Mathematics"
+    "name": "Учитель 1",
+    "subject": "Математика"
   }
 },
 {
   "model": "school.teacher",
   "pk": 2,
   "fields": {
-    "name": "Teacher 2",
-    "subject": "Physics"
+    "name": "Учитель 2",
+    "subject": "Физика"
   }
 },
 {
   "model": "school.teacher",
   "pk": 3,
   "fields": {
-    "name": "Teacher 3",
-    "subject": "Computer science"
+    "name": "Учитель 3",
+    "subject": "Информатика"
   }
 },
 {
   "model": "school.student",
   "pk": 1,
   "fields": {
-    "name": "Pupil 1",
+    "name": "Ученик 1",
     "group": "8A"
   }
 },
@@ -35,7 +35,7 @@
   "model": "school.student",
   "pk": 2,
   "fields": {
-    "name": "Pupil 2",
+    "name": "Ученик 2",
     "group": "8B"
   }
 },
@@ -43,7 +43,7 @@
   "model": "school.student",
   "pk": 3,
   "fields": {
-    "name": "Pupil 3",
+    "name": "Ученик 3",
     "group": "8C"
   }
 },

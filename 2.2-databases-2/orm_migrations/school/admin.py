@@ -17,5 +17,5 @@ class StudentAdmin(admin.ModelAdmin):
 @admin.register(Teacher)
 class TeacherAdmin(admin.ModelAdmin):
     list_display = ['id', 'name', 'subject']
-    inlines = [StudentTeacherInLine, ]
+
 
