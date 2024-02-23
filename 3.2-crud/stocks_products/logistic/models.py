@@ -6,6 +6,9 @@ class Product(models.Model):
     title = models.CharField(max_length=60, unique=True)
     description = models.TextField(null=True, blank=True)
 
+    class Meta:
+        ordering = ['id']
+
 
 class Stock(models.Model):
     address = models.CharField(max_length=200, unique=True)

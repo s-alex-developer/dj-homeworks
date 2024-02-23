@@ -49,7 +49,7 @@ Content-Type: application/json
   "address": "мой адрес не дом и не улица, мой адрес сегодня такой: www.ленинград-спб.ru3",
   "positions": [
     {
-      "product": 2,
+      "product": 1,
       "quantity": 250,
       "price": 120.50
     },
@@ -77,12 +77,10 @@ Content-Type: application/json
     {
       "product": 3,
       "quantity": 243,
-      "price": 145
+      "price": 145.
     }
   ]
 }
-
-###
 
 # поиск складов, где есть определенный продукт
 GET {{baseUrl}}/stocks/?products=2
