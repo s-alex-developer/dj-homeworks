@@ -1,22 +1,22 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
-from advertisements.models import Advertisement
+from advertisements.models import Advertisement, Favorite
 
 
-class UserSerializer(serializers.ModelSerializer):
+class UserModelSerializer(serializers.ModelSerializer):
     """Serializer для пользователя."""
 
     class Meta:
         model = User
         fields = ('id', 'username', 'first_name',
-                  'last_name',)
+                  'last_name')
 
 
-class AdvertisementSerializer(serializers.ModelSerializer):
+class AdvertisementModelSerializer(serializers.ModelSerializer):
     """Serializer для объявления."""
 
-    creator = UserSerializer(
+    creator = UserModelSerializer(
         read_only=True,
     )
 
@@ -44,9 +44,39 @@ class AdvertisementSerializer(serializers.ModelSerializer):
 
         users_open_ads = Advertisement.objects.filter(creator=self.context["request"].user.id,
                                                       status='OPEN').count()
-
-        if users_open_ads >= 5 and not data.get('status', False) == 'CLOSED':
+        # print(self.context["request"].method)
+        if users_open_ads == 10 and self.context["request"].method == 'POST':
             raise Exception('Превышено максимальное число активных объявлений для данного пользователя')
 
         return data
+
+
+class FavoriteModelSerializer(serializers.ModelSerializer):
+
+    advertisement_id = serializers.IntegerField()
+
+    class Meta:
+        model = Favorite
+        fields = ('id', 'advertisement_id', 'user_id')
+
+    def create(self, validated_data):
+
+        adv_creator = Advertisement.objects.get(pk=validated_data.get('advertisement_id')).creator.id
+        request_user_id = validated_data.get('user_id')
+
+        favorite_ads_id = []
+
+        for adv in Favorite.objects.filter(user_id=request_user_id):
+            favorite_ads_id.append(adv.advertisement_id)
+
+        if not adv_creator == request_user_id and not \
+                validated_data.get('advertisement_id') in favorite_ads_id:
+
+            return Favorite.objects.create(**validated_data)
+
+        elif adv_creator == request_user_id:
+            raise Exception('Нельзя сохранять свои объявления в Избранное.')
+
+        elif validated_data.get('advertisement_id') in favorite_ads_id:
+            raise Exception('Данное объявление уже сохранено в Избранном.')
 

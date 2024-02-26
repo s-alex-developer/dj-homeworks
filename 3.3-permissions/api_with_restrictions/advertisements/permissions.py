@@ -14,15 +14,3 @@ class AdvertisementObjectPermission(permissions.BasePermission):
 
         return bool(request.user == obj.creator or request.user.is_superuser)
 
-
-class AdvertisementModelPermission(permissions.BasePermission):
-
-    def has_permission(self, request, view):
-        if request.method in permissions.SAFE_METHODS:
-            return True
-
-        return True
-
-
-
-

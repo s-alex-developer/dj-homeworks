@@ -2,14 +2,16 @@ from rest_framework import response
 from rest_framework import viewsets
 from rest_framework import pagination
 from rest_framework import throttling
+from rest_framework import permissions
+from rest_framework.decorators import action
 
 from django.db.models import Q
 from django_filters import DateFromToRangeFilter
 from django_filters.rest_framework import FilterSet
 
 from .models import Advertisement
-from .permissions import AdvertisementObjectPermission, AdvertisementModelPermission
-from .serializers import AdvertisementSerializer
+from .permissions import AdvertisementObjectPermission
+from .serializers import AdvertisementModelSerializer, FavoriteModelSerializer
 
 
 class AdvertisementFilter(FilterSet):
@@ -18,7 +20,7 @@ class AdvertisementFilter(FilterSet):
 
     class Meta:
         model = Advertisement
-        fields = ['status', 'creator']
+        fields = ['status', "creator"]
 
 
 class AdvertisementViewSet(viewsets.ModelViewSet):
@@ -28,11 +30,11 @@ class AdvertisementViewSet(viewsets.ModelViewSet):
     #   сериализаторов и фильтров
 
     queryset = Advertisement.objects.all()
-    serializer_class = AdvertisementSerializer
+    serializer_class = AdvertisementModelSerializer
 
     permission_classes = [
         AdvertisementObjectPermission,
-        AdvertisementModelPermission
+        permissions.IsAuthenticatedOrReadOnly
     ]
 
     throttle_classes = [
@@ -59,6 +61,8 @@ class AdvertisementViewSet(viewsets.ModelViewSet):
         if not request.auth:
             queryset = Advertisement.objects.filter(~Q(status='DRAFT'))
 
+        queryset = self.filter_queryset(queryset)
+
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = self.get_serializer(page, many=True)
@@ -66,3 +70,48 @@ class AdvertisementViewSet(viewsets.ModelViewSet):
 
         serializer = self.get_serializer(queryset, many=True)
         return response.Response(serializer.data)
+
+    # Получить все избранные объявления конкретного пользователя:
+    @action(detail=False, methods=["GET"], )
+    def favorites(self, request):
+
+        queryset = Advertisement.objects.filter(favorites__user_id=request.user)
+
+        queryset = self.filter_queryset(queryset)
+
+        serializer = self.serializer_class(data=queryset, many=True)
+        serializer.is_valid()
+
+        return response.Response(serializer.data)
+
+    @action(detail=False, methods=['POST'], serializer_class=FavoriteModelSerializer)
+    def add_favorite(self, request, ):
+
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid()
+        serializer.save(user_id=request.user.id)
+
+        return response.Response(serializer.data)
+
+
+
+
+
+
+
+
+
+
+
+
+
+    # Добавить объявление в избранное
+    # @action(detail=False, methods=['POST'], serializer_class=FavoriteModelSerializer)
+    # def favorite(self, request, ):
+    #
+    #     serializer = self.serializer_class(data=request.data)
+    #     serializer.is_valid(raise_exception=True)
+    #     serializer.save(user_id=request.user.id)
+    #
+    #     return response.Response(serializer.data)
+
