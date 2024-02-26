@@ -1,26 +1,16 @@
 from rest_framework import response
 from rest_framework import viewsets
+from django.db.models import Q
+
 from rest_framework import pagination
 from rest_framework import throttling
 from rest_framework import permissions
 from rest_framework.decorators import action
 
-from django.db.models import Q
-from django_filters import DateFromToRangeFilter
-from django_filters.rest_framework import FilterSet
-
 from .models import Advertisement
+from .filters import AdvertisementFilter
 from .permissions import AdvertisementObjectPermission
 from .serializers import AdvertisementModelSerializer, FavoriteModelSerializer
-
-
-class AdvertisementFilter(FilterSet):
-
-    created_at = DateFromToRangeFilter()
-
-    class Meta:
-        model = Advertisement
-        fields = ['status', "creator"]
 
 
 class AdvertisementViewSet(viewsets.ModelViewSet):
@@ -72,6 +62,7 @@ class AdvertisementViewSet(viewsets.ModelViewSet):
         return response.Response(serializer.data)
 
     # Получить все избранные объявления конкретного пользователя:
+    # http://127.0.0.1:8000/api/advertisements/favorites/
     @action(detail=False, methods=["GET"], )
     def favorites(self, request):
 
@@ -84,6 +75,9 @@ class AdvertisementViewSet(viewsets.ModelViewSet):
 
         return response.Response(serializer.data)
 
+    # Добавить объявление в избранное:
+    # http://127.0.0.1:8000/api/advertisements/add_favorite/
+    # Body (raw, JSON): { "advertisement_id": 30 }, где "advertisement_id" это 'id' объявления из таблицы advertisement.
     @action(detail=False, methods=['POST'], serializer_class=FavoriteModelSerializer)
     def add_favorite(self, request, ):
 
@@ -92,26 +86,3 @@ class AdvertisementViewSet(viewsets.ModelViewSet):
         serializer.save(user_id=request.user.id)
 
         return response.Response(serializer.data)
-
-
-
-
-
-
-
-
-
-
-
-
-
-    # Добавить объявление в избранное
-    # @action(detail=False, methods=['POST'], serializer_class=FavoriteModelSerializer)
-    # def favorite(self, request, ):
-    #
-    #     serializer = self.serializer_class(data=request.data)
-    #     serializer.is_valid(raise_exception=True)
-    #     serializer.save(user_id=request.user.id)
-    #
-    #     return response.Response(serializer.data)
-

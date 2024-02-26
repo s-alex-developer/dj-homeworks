@@ -87,7 +87,7 @@ REST_FRAMEWORK = {
 
         'rest_framework.pagination.PageNumberPagination'
     ],
-    'PAGE_SIZE': 20,
+    'PAGE_SIZE': 10,
 
     'DEFAULT_THROTTLE_CLASSES': [
         'rest_framework.throttling.UserRateThrottle',
@@ -108,10 +108,10 @@ WSGI_APPLICATION = 'api_with_restrictions.wsgi.application'
 
 DATABASES = {
     'default': {
-        'USER': 'postgres',  #
-        'PASSWORD': 17111985,  #
+        'USER': 'postgres',
+        'PASSWORD': '',
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'study_app_db',  # 'netology_classified_ads'
+        'NAME': 'netology_classified_ads',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }

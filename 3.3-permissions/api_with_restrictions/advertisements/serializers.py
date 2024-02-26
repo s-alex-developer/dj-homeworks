@@ -44,7 +44,7 @@ class AdvertisementModelSerializer(serializers.ModelSerializer):
 
         users_open_ads = Advertisement.objects.filter(creator=self.context["request"].user.id,
                                                       status='OPEN').count()
-        # print(self.context["request"].method)
+
         if users_open_ads == 10 and self.context["request"].method == 'POST':
             raise Exception('Превышено максимальное число активных объявлений для данного пользователя')
 
@@ -79,4 +79,3 @@ class FavoriteModelSerializer(serializers.ModelSerializer):
 
         elif validated_data.get('advertisement_id') in favorite_ads_id:
             raise Exception('Данное объявление уже сохранено в Избранном.')
-

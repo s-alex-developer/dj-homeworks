@@ -13,4 +13,3 @@ class AdvertisementObjectPermission(permissions.BasePermission):
             return True
 
         return bool(request.user == obj.creator or request.user.is_superuser)
-
