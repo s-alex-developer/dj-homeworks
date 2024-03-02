@@ -1,0 +1,2 @@
+[run]
+omit = tests/*, django_testing/*, manage.py
