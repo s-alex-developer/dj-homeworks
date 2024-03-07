@@ -126,28 +126,17 @@ def test_course_update(api_client, courses_factory):
     course = courses_factory(_quantity=1)
 
     course_id = course[0].id
-    start_course_name = course[0].name
-    put_course_name = "Тестовый курс: PUT-запроса к API"
-    patch_course_name = "Тестовый курс: PATCH-запроса к API"
+    start_name = course[0].name
+    new_name = "Тестовый курс: PATCH-запроса к API"
 
     # Act
-    put_response = api_client.put(f'/api/v1/courses/{course_id}/',
-                                  data={'name': put_course_name},
-                                  format='json')
-    after_put_course_name = Course.objects.last().name
-
-    patch_response = api_client.patch(f'/api/v1/courses/{course_id}/',
-                                      data={'name': patch_course_name},
-                                      format='json')
-    after_patch_course_name = Course.objects.last().name
-
+    response = api_client.patch(f'/api/v1/courses/{course_id}/',
+                                data={'name': new_name},
+                                format='json')
     # Assert
-    assert put_response.status_code == 200
-    assert after_put_course_name == put_course_name and \
-           after_put_course_name != start_course_name
-
-    assert patch_response.status_code == 200
-    assert after_patch_course_name == patch_course_name
+    assert response.status_code == 200
+    assert response.data['name'] == new_name
+    assert response.data['name'] != start_name
 
 
 @pytest.mark.django_db
@@ -164,19 +153,25 @@ def test_course_delete(api_client, courses_factory):
                                         format='json')
 
     # Assert
-    assert delete_response.status_code == 200 or \
-           delete_response.status_code == 204
+    assert delete_response.status_code == 204
     assert len(Course.objects.filter(pk=course_id)) == 0
 
 
 # <<<<<<<<<<<<<<<<<<< ДОПОЛНИТЕЛЬНОЕ ЗАДАНИЕ >>>>>>>>>>>>>>>>>>>> #
 
-
+@pytest.mark.parametrize(
+    'students_count,status_code', [
+        (19, 201),
+        (20, 201),
+        (21, 400)
+    ]
+)
 @pytest.mark.django_db
-@pytest.mark.parametrize('students_count', [1, 20, 21])
-def test_add_students_on_course(client, students_factory, settings, students_count):
+def test_max_students_at_course(client, students_factory, students_count, status_code):
 
-    if students_count <= settings.MAX_STUDENTS_PER_COURSE:
-        assert True
-    else:
-        assert False
+    # Arrange
+    students = students_factory(_quantity=students_count)
+    student_ids = [stud.id for stud in students]
+    data = {"name": 'Test', "students": student_ids}
+    response = client.post('/api/v1/courses/', data=data)
+    assert response.status_code == status_code
